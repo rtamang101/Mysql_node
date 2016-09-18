@@ -19,38 +19,31 @@ connection.query('select * from products', function(err, results){
 	for(i=0; i<results.length; i++){
 		console.log('      '+results[i].ItemID+'      |      '+results[i].ProductName+'      |      $'+results[i].Price);
 	}
-	console.log('****************************************************************');
-});
-inquirer.prompt([
-	{
-		type: 'input',
-		message: 'Please enter the ItemID you want to purchase:',
-		name: 'itemID'
-	},
-	{
-		type: 'input',
-		message: 'Please enter the quantity:',
-		name: 'quantity'
-	}
-	]).then(function(order){
-		console.log(results[i].ItemID);
-	});
+	console.log('**************************************************************** ');
+	inquirer.prompt([
+		{
+			type: 'input',
+			message: 'Please enter the ItemID you want to purchase:',
+			name: 'ItemID'
+		},
+		{
+			type: 'input',
+			message: 'Please enter the quantity:',
+			name: 'quantity'
+		}
+		]).then(function(order){
+			console.log(order.ItemID +"  "+ order.quantity);
+			connection.query('select * from products where ItemID ='+order.ItemID+'', function(err, results){
+					var total = results.Price * order.quantity;
+					console.log(results.ItemID);
 
-// inquirer.prompt([
-// 	{
-// 		type: 'list',
-// 		choices: ['list available items', 'Buy a product'],
-// 		name: 'list',
-// 		message: 'Welcome to Bamazon, what would you like to do?'
-// 	}
-// 	]).then(function(results){
-// 		console.log(results);
-// 		if(results.list == 'list available items'){
-// 			connection.query('SELECT * FROM bamazon.products', function(err, results){
-// 				console.log(results);
-// 			});
-// 		}
-// 		// else{
-// 		// 	connection.query('')
-// 		// }
-// 	});
+					if (results = {}){
+						console.log('incorrect itemid try again');
+					}else{
+						console.log('Your total for '+results.ProductName+' is $'+total);
+						console.log('Thank you for shopping at Bamazon');
+					}
+				
+			})
+		});
+});
