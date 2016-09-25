@@ -41,7 +41,7 @@ function queryFunction(){
 							var availableTotal = item.Price * item.StockQuantity;
 							console.log('Your total for '+item.ProductName+' is $'+availableTotal);
 							console.log('Thank you for shopping at Bamazon');
-							connection.query('UPDATE bamazon.products SET StockQuantity ='+(item.StockQuantity - order.quantity)+' WHERE ItemID ='+item.ItemID, function(err,results,feilds){
+							connection.query('UPDATE bamazon.products SET StockQuantity = 0 WHERE ItemID ='+item.ItemID, function(err,results,feilds){
 								connection.end();
 							});
 						};
