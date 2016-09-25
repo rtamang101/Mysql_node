@@ -5,6 +5,7 @@ Working Bamazon app!
 List of items for sale! 
 
 Case 1: items for sale available to purchase!
+	
 	> lists items
 
 	>asks for an item ID you want to buy!
@@ -16,6 +17,7 @@ Case 1: items for sale available to purchase!
 	>app ends
 
 Case 2: Items for sale out of stock!
+	
 	> lists items
 
 	>asks for an item ID you want to buy!
