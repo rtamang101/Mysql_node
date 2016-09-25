@@ -11,10 +11,8 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err){
 if (err)throw err;
-// console.log('the connection id is'+ connection.threadId);
 }) ;
 queryFunction();
-
 function queryFunction(){
 	connection.query('select * from products', function(err, results){
 		console.log('***********************Welcome to Bamazon***********************');
@@ -36,21 +34,17 @@ function queryFunction(){
 					name: 'quantity'
 				}
 				]).then(function(order){
-
-					// console.log(order.ItemID +"  "+ order.quantity);
 					connection.query('select * from products where ItemID ='+order.ItemID, function(err, results, fields){
-
 						var item = results[0];
 						var total = item.Price * order.quantity;
 						function totalIt(){
-							console.log('total');
-							// console.log('price::', typeof results[i].Price);
-							console.log('available stock:: ', item.StockQuantity);
 							var availableTotal = item.Price * item.StockQuantity;
 							console.log('Your total for '+item.ProductName+' is $'+availableTotal);
 							console.log('Thank you for shopping at Bamazon');
+							connection.query('UPDATE bamazon.products SET StockQuantity ='+(item.StockQuantity - order.quantity)+' WHERE ItemID ='+item.ItemID, function(err,results,feilds){
+								connection.end();
+							});
 						};
-								// if (results[i].StockQuantity <1 && results[i].StockQuantity<order.quantity){
 						if(item.StockQuantity <1){
 							console.log('=====================================================');
 							console.log('The item you are requesting is currently out of stock');
@@ -88,21 +82,23 @@ function queryFunction(){
 										name: 'lessStockList'
 									}
 								]).then(function(lessList){
-									// console.log(lessList);
 									if(lessList.lessStockList == 'Buy the available stock'){
 										totalIt();
 									}else if(lessList.lessStockList == 'Shop for other Items'){
 										queryFunction();
 									}else if(lessList.lessStockList == 'Done shopping'){
 										connection.end();
-									};
+									}
 								});
 						}else{
 							console.log('Your total for '+item.ProductName+' is $'+total);
 							console.log('Thank you for shopping at Bamazon');
-						};
+							connection.query('UPDATE bamazon.products SET StockQuantity ='+(item.StockQuantity - order.quantity)+' WHERE ItemID ='+item.ItemID, function(err,results,feilds){
+								connection.end();
+							});
+						}
 				});
 			});
-		};
+		}
 	});
-};
+}
