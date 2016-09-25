@@ -41,7 +41,7 @@ function queryFunction(){
 							var availableTotal = item.Price * item.StockQuantity;
 							setTimeout(function(){
 								console.log('Your total for '+item.ProductName+' is $'+availableTotal);
-								setTimeout(function(){console.log('Thank you for shopping at Bamazon');},1000);
+								setTimeout(function(){console.log('Thank you for shopping at Bamazon');},2000);
 								connection.query('UPDATE bamazon.products SET StockQuantity = 0 WHERE ItemID ='+item.ItemID, function(err,results,feilds){
 								setTimeout(function(){connection.end();},1000);
 								});
@@ -104,7 +104,7 @@ function queryFunction(){
 						}else{
 							setTimeout(function(){
 								console.log('Your total for '+item.ProductName+' is $'+total);
-								console.log('Thank you for shopping at Bamazon');
+								setTimeout(function(){console.log('Thank you for shopping at Bamazon');},2000);
 								connection.query('UPDATE bamazon.products SET StockQuantity ='+(item.StockQuantity - order.quantity)+' WHERE ItemID ='+item.ItemID, function(err,results,feilds){
 								connection.end();
 								});
