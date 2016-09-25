@@ -39,63 +39,76 @@ function queryFunction(){
 						var total = item.Price * order.quantity;
 						function totalIt(){
 							var availableTotal = item.Price * item.StockQuantity;
-							console.log('Your total for '+item.ProductName+' is $'+availableTotal);
-							console.log('Thank you for shopping at Bamazon');
-							connection.query('UPDATE bamazon.products SET StockQuantity = 0 WHERE ItemID ='+item.ItemID, function(err,results,feilds){
-								connection.end();
-							});
+							setTimeout(function(){
+								console.log('Your total for '+item.ProductName+' is $'+availableTotal);
+								setTimeout(function(){console.log('Thank you for shopping at Bamazon');},1000);
+								connection.query('UPDATE bamazon.products SET StockQuantity = 0 WHERE ItemID ='+item.ItemID, function(err,results,feilds){
+								setTimeout(function(){connection.end();},1000);
+								});
+							},2000);
 						};
 						if(item.StockQuantity <1){
-							console.log('=====================================================');
-							console.log('The item you are requesting is currently out of stock');
-							console.log('  We are working on to re-stock as soon as possible');
-							console.log('        We apologize for the inconvenience');
-							console.log('=====================================================');
+								console.log('=====================================================');
+								console.log('The item you are requesting is currently out of stock');
+								console.log('  We are working on to re-stock as soon as possible');
+								console.log('        We apologize for the inconvenience');
+								console.log('=====================================================');
 							inquirer.prompt([
 								{
-									type: 'list',
-									message: 'Would you still like to continue?',
-									choices: ['Shop for other Items.', 'Done shopping'],
-									name: 'outOfInventoryList'
+								type: 'list',
+								message: 'Would you still like to continue?',
+								choices: ['Shop for other Items.', 'Done shopping'],
+								name: 'outOfInventoryList'
 								}	
 							]).then(function(outList){
 								if(outList.outOfInventoryList == 'Shop for other Items.'){
-										console.log('queryFunction type::', typeof queryFunction);
+									setTimeout(function(){
 										queryFunction();
+									},2000);
 								}else if(outList.outOfInventoryList == 'Done shopping'){
-										connection.end();
+										setTimeout(function(){
+											console.log('Thank you for shopping with Bamazon');
+										},2000);
+										setTimeout(function(){connection.end();},2000);
 								};
 							});
 									
 
 						}else if(item.StockQuantity<order.quantity){
-							console.log('==================================================');
-							console.log('   There is only '+item.StockQuantity+' of the item you requested');
-							console.log('We are working on to re-stock as soon as possible');
-							console.log('       We apologize for the inconvenience');
-							console.log('==================================================');
+								console.log('==================================================');
+								console.log('   There is only '+item.StockQuantity+' of the item you requested');
+								console.log('We are working on to re-stock as soon as possible');
+								console.log('       We apologize for the inconvenience');
+								console.log('==================================================');
 							inquirer.prompt([
-									{
-										type: 'list',
-										choices: ['Buy the available stock', 'Shop for other Items', 'Done shopping'],
-										message: 'Would you still like to continue',
-										name: 'lessStockList'
-									}
-								]).then(function(lessList){
-									if(lessList.lessStockList == 'Buy the available stock'){
-										totalIt();
-									}else if(lessList.lessStockList == 'Shop for other Items'){
+								{
+									type: 'list',
+									choices: ['Buy the available stock', 'Shop for other Items', 'Done shopping'],
+									message: 'Would you still like to continue',
+									name: 'lessStockList'
+								}
+							]).then(function(lessList){
+								if(lessList.lessStockList == 'Buy the available stock'){
+									totalIt();
+								}else if(lessList.lessStockList == 'Shop for other Items'){
+									setTimeout(function(){
 										queryFunction();
-									}else if(lessList.lessStockList == 'Done shopping'){
+									},2000);
+								}else if(lessList.lessStockList == 'Done shopping'){
+									setTimeout(function(){
+										console.log('Thank you for shopping at Bamazon');
 										connection.end();
-									}
-								});
-						}else{
-							console.log('Your total for '+item.ProductName+' is $'+total);
-							console.log('Thank you for shopping at Bamazon');
-							connection.query('UPDATE bamazon.products SET StockQuantity ='+(item.StockQuantity - order.quantity)+' WHERE ItemID ='+item.ItemID, function(err,results,feilds){
-								connection.end();
+									},2000);
+								}
 							});
+						}else{
+							setTimeout(function(){
+								console.log('Your total for '+item.ProductName+' is $'+total);
+								console.log('Thank you for shopping at Bamazon');
+								connection.query('UPDATE bamazon.products SET StockQuantity ='+(item.StockQuantity - order.quantity)+' WHERE ItemID ='+item.ItemID, function(err,results,feilds){
+								connection.end();
+								});
+							},2000);
 						}
 				});
 			});
